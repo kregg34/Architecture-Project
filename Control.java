@@ -41,7 +41,7 @@ public class Control
 		
 		for(int i = BIT_RANGE_EXPONENT[1]; i <= BIT_RANGE_EXPONENT[0]; i++) 
 		{
-			exponentBits.set(i, register.getBits().get(i));
+			exponentBits.set(i - BIT_RANGE_EXPONENT[1], register.getBits().get(i));
 		}
 		
 		return exponentBits;
@@ -53,7 +53,7 @@ public class Control
 		
 		for(int i = BIT_RANGE_MANTISSA[1]; i <= BIT_RANGE_MANTISSA[0]; i++) 
 		{
-			mantissaBits.set(i, register.getBits().get(i));
+			mantissaBits.set(i - BIT_RANGE_MANTISSA[1], register.getBits().get(i));
 		}
 
 		return mantissaBits;
