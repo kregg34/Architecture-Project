@@ -9,9 +9,9 @@ import java.util.BitSet;
 public class Control 
 {
 	//Index range for different parts of the floating point number
-	private static final int BIT_POSITION_SIGN     = 63;
-	private static final int [] BIT_RANGE_EXPONENT = {62, 52};
-	private static final int [] BIT_RANGE_MANTISSA = {51,  0};
+	private static final int BIT_POSITION_SIGN     = 0;
+	private static final int [] BIT_RANGE_EXPONENT = {11, 1};
+	private static final int [] BIT_RANGE_MANTISSA = {63, 12};
 	
 	private static BitSet exponent_bias = new BitSet(10);
 	
@@ -28,20 +28,23 @@ public class Control
 	
 	public static BitSet extractSign(Register register)
 	{
-		BitSet signBit = new BitSet(1);
+		BitSet signBit = new BitSet();
 		
-		signBit.set(0, register.getBits().get(BIT_POSITION_SIGN));
+		boolean bit = register.getBits().get(BIT_POSITION_SIGN);
+		signBit.set(63, bit);
+		
+		System.out.println(signBit.length());
 		
 		return signBit;
 	}
 	
 	public static BitSet extractExponent(Register register) 
 	{
-		BitSet exponentBits = new BitSet(11);
+		BitSet exponentBits = new BitSet();
 		
 		for(int i = BIT_RANGE_EXPONENT[1]; i <= BIT_RANGE_EXPONENT[0]; i++) 
 		{
-			exponentBits.set(i - BIT_RANGE_EXPONENT[1], register.getBits().get(i));
+			exponentBits.set(i - BIT_RANGE_EXPONENT[1] + 53, register.getBits().get(i));
 		}
 		
 		return exponentBits;
@@ -49,11 +52,11 @@ public class Control
 	
 	public static BitSet extractMantissa(Register register) 
 	{
-		BitSet mantissaBits = new BitSet(52);
+		BitSet mantissaBits = new BitSet();
 		
 		for(int i = BIT_RANGE_MANTISSA[1]; i <= BIT_RANGE_MANTISSA[0]; i++) 
 		{
-			mantissaBits.set(i - BIT_RANGE_MANTISSA[1], register.getBits().get(i));
+			mantissaBits.set(i - BIT_RANGE_MANTISSA[1] + 12, register.getBits().get(i));
 		}
 
 		return mantissaBits;
