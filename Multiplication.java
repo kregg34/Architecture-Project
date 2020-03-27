@@ -6,5 +6,6 @@ public class Multiplication
 	private Register muliplier = new Register();
 	private Register product = new Register();
 	
-	
+	multiplicand = Driver.r1;
+	multiplier = Driver.r2;
 }
