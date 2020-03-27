@@ -26,12 +26,13 @@ public class Driver
 		r2.setBits(value2);														//setbits
 		
 		
+		
 		System.out.println("Sign: " + Control.extractSign(r1));					
 		System.out.println("Exponent: " + Control.extractExponent(r1));
 		System.out.println("Mantissa: " + Control.extractMantissa(r1));
 		
 		System.out.println("Sign: " + Control.extractSign(r2));					
-		System.out.println("Exponent: " + Control.extractExponent(r2));
+		System.out.println("Exponent: " + Control.extractEzxponent(r2));
 		System.out.println("Mantissa: " + Control.extractMantissa(r2));
 		
 		
@@ -39,6 +40,9 @@ public class Driver
 		 * Now we will manually divide and multiply FP numbers
 		 * using the procedure used in the textbook
 		 */
+		
+		System.out.println("Single Point Multiplication: "+toIEEE754Format(Multiplication.productS));
+		System.out.println("Double Point Multiplication: "+toIEEE754Format(Multiplication.productD));
 		
 
 	}
