@@ -23,7 +23,7 @@ public class Driver
 		Register r1 = new Register();
 		r1.setBits(value1);
 		Register r2 = new Register();											
-		r2.setBits(value2);
+		r2.setBits(value2);														//setbits
 		
 		
 		System.out.println("Sign: " + Control.extractSign(r1));					
