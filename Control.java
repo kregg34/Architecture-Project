@@ -1,3 +1,5 @@
+package project;
+
 /*
  * Control class is "static" and is able to modify the registers
  */

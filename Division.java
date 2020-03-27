@@ -1,3 +1,5 @@
+package project;
+
 public class Division 
 {
 	private Register quotient = new Register();

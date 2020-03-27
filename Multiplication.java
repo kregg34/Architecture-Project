@@ -1,3 +1,5 @@
+package project;
+
 public class Multiplication 
 {
 	private Register muliplicand = new Register();

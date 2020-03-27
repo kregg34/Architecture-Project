@@ -1,3 +1,5 @@
+package project;
+
 /*
  * Represents a floating point register.
  */
