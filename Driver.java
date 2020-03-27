@@ -1,65 +1,125 @@
 package project;
 
-/*
- * Used to control what tests are performed.
- * Also will be used for bench marks?
- */
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Driver 
 {
 	public static void main(String [] args) 
 	{
-		//some test numbers for debugging
-		double num1 = -11465665464567.753232;
-		double num2 = 14028385.123591;											//a random number (multiplier/dividend)
+		ArrayList <Double> doubleValues = new ArrayList<Double>();
+		ArrayList <Float> floatValues = new ArrayList<Float>();
 		
-		String value1 = toIEEE754Format(num1);
-		String value2= toIEEE754Format(num2);
-		System.out.println(value1);
-		System.out.println(value2);
+		final int NUM_VALUES = 20000000;
 		
+		final double MIN_DOUBLE = -100000.0;
+		final double MAX_DOUBLE =  100000.0;
 		
-		//Test register and control class
-		Register r1 = new Register();
-		r1.setBits(value1);
-		Register r2 = new Register();											
-		r2.setBits(value2);														//setbits
+		Random random = new Random(System.currentTimeMillis());
 		
-		
-		
-		System.out.println("Sign: " + Control.extractSign(r1));					
-		System.out.println("Exponent: " + Control.extractExponent(r1));
-		System.out.println("Mantissa: " + Control.extractMantissa(r1));
-		
-		System.out.println("Sign: " + Control.extractSign(r2));					
-		System.out.println("Exponent: " + Control.extractEzxponent(r2));
-		System.out.println("Mantissa: " + Control.extractMantissa(r2));
-		
-		
-		/*
-		 * Now we will manually divide and multiply FP numbers
-		 * using the procedure used in the textbook
-		 */
-		
-		System.out.println("Single Point Multiplication: "+toIEEE754Format(Multiplication.productS));
-		System.out.println("Double Point Multiplication: "+toIEEE754Format(Multiplication.productD));
-		
-
-	}
-	
-	private static String toIEEE754Format(double value) 
-	{
-		String ieee754Str = "";
-		
-		//If a number is positive, the sign bit is 0, this is left out
-		//of the conversion... so have to add it on manually.
-		if(value > 0)
+		for(int i = 0; i < NUM_VALUES; i++) 
 		{
-			ieee754Str += "0";
+			double randomValue = MIN_DOUBLE + (MAX_DOUBLE - MIN_DOUBLE) * random.nextDouble();
+			doubleValues.add(randomValue);
+			floatValues.add((float) randomValue);
 		}
 		
-		ieee754Str += Long.toBinaryString(Double.doubleToRawLongBits(value));
+		double resultDouble;
+		float resultFloat;
 		
-		return ieee754Str;
+		//multiplying double values
+		ArrayList<Double> multDoubVals = new ArrayList<Double>();
+		
+		for(int j = 0; j < 50; j++) 
+		{
+			long startTime = System.nanoTime();
+			
+			for(int i = 0; i < NUM_VALUES - 1; i++) 
+			{
+				resultDouble = doubleValues.get(i) * doubleValues.get(i+1);
+			}
+			long endTime = System.nanoTime();
+			
+			double time = (endTime - startTime)/1000000000.0;
+			multDoubVals.add(time);
+			System.out.println("Time to multiply double values: " + time + " seconds");
+		}
+		
+		
+		
+		//dividing double values
+		ArrayList<Double> divDoubVals = new ArrayList<Double>();
+		
+		for(int j = 0; j < 50; j++) 
+		{
+			long startTime = System.nanoTime();
+			
+			for(int i = 0; i < NUM_VALUES - 1; i++) 
+			{
+				resultDouble = doubleValues.get(i) / doubleValues.get(i+1);
+			}
+			long endTime = System.nanoTime();
+			
+			double time = (endTime - startTime)/1000000000.0;
+			divDoubVals.add(time);
+			System.out.println("Time to divide double values: " + time + " seconds");
+		}
+		
+		
+		
+		//multiplying double values
+		ArrayList<Double> multFloatVals = new ArrayList<Double>();
+		
+		for(int j = 0; j < 50; j++) 
+		{
+			long startTime = System.nanoTime();
+			
+			for(int i = 0; i < NUM_VALUES - 1; i++) 
+			{
+				resultDouble = floatValues.get(i) * floatValues.get(i+1);
+			}
+			long endTime = System.nanoTime();
+			
+			double time = (endTime - startTime)/1000000000.0;
+			multFloatVals.add(time);
+			System.out.println("Time to multiply float values: " + time + " seconds");
+		}
+		
+		
+		
+		//multiplying double values
+		ArrayList<Double> divFloatVals = new ArrayList<Double>();
+		
+		for(int j = 0; j < 50; j++) 
+		{
+			long startTime = System.nanoTime();
+			
+			for(int i = 0; i < NUM_VALUES - 1; i++) 
+			{
+				resultDouble = floatValues.get(i) / floatValues.get(i+1);
+			}
+			long endTime = System.nanoTime();
+			
+			double time = (endTime - startTime)/1000000000.0;
+			divFloatVals.add(time);
+			System.out.println("Time to divide float values: " + time + " seconds");
+		}
+
+		System.out.println("\n\nAverage time for mult. doubles: " + getAverage(multDoubVals));
+		System.out.println("Average time for div. doubles: " + getAverage(multDoubVals));
+		System.out.println("Average time for mult. floats: " + getAverage(multDoubVals));
+		System.out.println("Average time for div. floats: " + getAverage(multDoubVals));
+	}
+	
+	private static double getAverage(ArrayList<Double> values)
+	{
+		double avgVal = 0;
+		
+		for(int i = 0; i < values.size(); i++)
+		{
+			avgVal += values.get(i);
+		}
+		
+		return avgVal / values.size();
 	}
 }
