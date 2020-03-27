@@ -1,7 +1,3 @@
-package project;
-
-import java.util.BitSet;
-
 /*
  * Used to control what tests are performed.
  * Also will be used for bench marks?
@@ -17,21 +13,14 @@ public class Driver
 		String value1 = toIEEE754Format(num1);
 		System.out.println(value1);
 		
-		BitSet set = toBitSet(value1);
-		printBitSet(set);
 		
 		//Test register and control class
 		Register r1 = new Register();
-		r1.setBits(set);
+		r1.setBits(value1);
 		
-		BitSet sign = Control.extractSign(r1);
-		BitSet exp = Control.extractExponent(r1);
-		BitSet mantissa = Control.extractMantissa(r1);
-		
-		System.out.println("\nExtracting the sign, exp, mantissa...");
-		printBitSet(sign);
-		printBitSet(exp);
-		printBitSet(mantissa);
+		System.out.println("Sign: " + Control.extractSign(r1));
+		System.out.println("Exponent: " + Control.extractExponent(r1));
+		System.out.println("Mantissa: " + Control.extractMantissa(r1));
 		
 		/*
 		 * Now we will manually divide and multiply FP numbers
@@ -39,35 +28,6 @@ public class Driver
 		 */
 		
 
-	}
-	
-	private static void printBitSet(BitSet bitset) 
-	{
-		for(int i = 0; i < bitset.size(); i++)
-		{
-			if(bitset.get(i)) {
-				System.out.print("1");
-			}else {
-				System.out.print("0");
-			}
-		}
-		System.out.println();
-	}
-	
-	private static BitSet toBitSet(String ieee754FormatNum) 
-	{
-		BitSet ieee754BitSet = new BitSet(64);
-		
-		for(int i = 0; i < ieee754FormatNum.length(); i++)
-		{
-			if(ieee754FormatNum.charAt(i) == '0') {
-				ieee754BitSet.set(i, false);
-			}else {
-				ieee754BitSet.set(i, true);
-			}
-		}
-		
-		return ieee754BitSet;
 	}
 	
 	private static String toIEEE754Format(double value) 
