@@ -1,29 +1,32 @@
 package project;
 
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+
 public class TrialDivision
 {
 
-	private static long pid;
-	private static List<Integer> factors = new ArrayList<Integer>();
+	private static BigInteger pid;
+	private static List<BigInteger> factors = new ArrayList<BigInteger>();
 	
-    public static List<Integer> doDivision(long input)
+    public static List<BigInteger> doDivision(BigInteger input)
     {
-    	pid = 2;
+    	pid = new BigInteger("2");
     	factors.clear();
     	
 		do 
 		{
-			if(input % pid == 0) 
+			if(input.mod(pid) == BigInteger.ZERO) 
 			{
-				factors.add((int)pid);
-				input = input/pid;
+				factors.add(pid);
+				input = input.divide(pid);
 			}
 			else
 			{
-				pid++;
+				pid = pid.add(BigInteger.ONE);
 			}
-		}while(input > 1);
+		}while(input.compareTo(BigInteger.ONE) == 1);
 		
 		return factors;
 	}

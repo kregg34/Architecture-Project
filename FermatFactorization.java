@@ -1,32 +1,53 @@
 package project;
 
-import java.util.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FermatFactorization
 {
-	public static List<Long> FermatFactor(long input)
+	public static List<BigInteger> FermatFactor(BigInteger input)
 	{
-		List<Long> factor = new ArrayList<Long>();
+		List<BigDecimal> factor = new ArrayList<BigDecimal>();
+		List<BigInteger> factor2 = new ArrayList<BigInteger>();
 		
-		for(int k = 1; k < Math.sqrt(input); k++) 
+		for(BigInteger k = new BigInteger("1"); k.compareTo(input.sqrt()) == -1 ; k = k.add(BigInteger.ONE)) 
 		{
-			long l = (long) (input + Math.pow(k, 2));
+			BigInteger l = input.add(square(k)); //n+k^2 = l^2
+			
 			if(isSquare(l)) 
 			{
-				factor.add((long) Math.sqrt(l) - k);
-				factor.add((long) Math.sqrt(l) + k);
+				factor.add(new BigDecimal(l).sqrt(new MathContext(0)).subtract(new BigDecimal(k)));
+				factor.add(new BigDecimal(l).sqrt(new MathContext(0)).add(new BigDecimal(k)));
 				break;
 			}
 		}
 		
-		return factor;
+		
+		for(BigDecimal b: factor) {
+			factor2.add(b.toBigInteger());
+		}
+		return factor2;
 	}
 	
-	private static boolean isSquare(double input) 
+	private static BigInteger square(BigInteger x)
 	{
-		long sqr = (long) Math.sqrt(input);
-		if(sqr*sqr == input || (sqr+1)*(sqr+1)==input)
-			return true;
-		return false;
+		BigInteger sq = new BigInteger("0");
+		
+		sq = sq.add(x);
+		sq = sq.multiply(sq);
+		
+		return sq;
+	}
+	
+	private static boolean isSquare(BigInteger input) 
+	{
+		BigDecimal sqr = new BigDecimal(input).sqrt(new MathContext(100));
+		sqr = sqr.subtract(sqr.setScale(0, RoundingMode.UP));
+		
+		return (sqr == BigDecimal.ZERO);
 	}
 }
