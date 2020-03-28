@@ -1,26 +1,29 @@
+package project;
+
 import java.util.*;
 
-public class FermatFactorization {
-
-	
-	public Object[] FermatFactor(long input) {
-		long num1 = (long) Math.ceil(Math.sqrt(input));
-		long num2 = num1 * num1 - input;
-		while(isSquare(num2))
-		{
-			num1++;
-			num2 = num1*num1-input;
-		}
-		long root1 = num1 - (long)Math.sqrt(num2);
-		long root2 = input / root1;
-		
+public class FermatFactorization
+{
+	public static List<Long> FermatFactor(long input)
+	{
 		List<Long> factor = new ArrayList<Long>();
-		factor.add(root1);
-		factor.add(root2);
 		
-		return factor.toArray();
+		for(int k = 1; k < Math.sqrt(input); k++) 
+		{
+			long l = (long) (input + Math.pow(k, 2));
+			if(isSquare(l)) 
+			{
+				factor.add((long) Math.sqrt(l) - k);
+				factor.add((long) Math.sqrt(l) + k);
+				break;
+			}
+		}
+		
+		return factor;
 	}
-	public boolean isSquare(long input) {
+	
+	private static boolean isSquare(double input) 
+	{
 		long sqr = (long) Math.sqrt(input);
 		if(sqr*sqr == input || (sqr+1)*(sqr+1)==input)
 			return true;
