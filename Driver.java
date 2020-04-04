@@ -9,8 +9,8 @@ public class Driver
 	private static Random randomGenerator = new Random(System.currentTimeMillis());
 	private static final int NUM_OF_TESTS = 10;
 	
-	private static final int MIN_PRIME_VAL = 2000000;
-	private static final int MAX_PRIME_VAL = 4000000;
+	private static final int MIN_PRIME_VAL = 10;
+	private static final int MAX_PRIME_VAL = 2000000;
 	
 	
 	public static void main(String [] args)
@@ -28,15 +28,15 @@ public class Driver
 		{
 			System.out.println("Currently factoring: " + numsToFactor.get(i));
 			
-			double startTime = System.currentTimeMillis();
+			double startTime = System.nanoTime();
 			TrialDivision.doDivision(numsToFactor.get(i));
-			double endTime = System.currentTimeMillis();
-			timesTrial.add((endTime-startTime) / 1000);
+			double endTime = System.nanoTime();
+			timesTrial.add((endTime-startTime) / 1000000000);
 			
-			startTime = System.currentTimeMillis();
+			startTime = System.nanoTime();
 			FermatFactorization.FermatFactor(numsToFactor.get(i));
-			endTime = System.currentTimeMillis();
-			timesFermat.add((endTime-startTime) / 1000);
+			endTime = System.nanoTime();
+			timesFermat.add((endTime-startTime) / 1000000000);
 		}
 		
 		System.out.println("Test done!");
