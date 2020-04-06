@@ -3,14 +3,14 @@ package project;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Driver 
 {
-	private static Random randomGenerator = new Random(System.currentTimeMillis());
-	private static final int NUM_OF_TESTS = 2;
-	
-	private static final int MIN_PRIME_VAL = 10;
-	private static final int MAX_PRIME_VAL = 2000000;
+	private static Random randomGenerator = new Random(123456789);
+	private static final int NUM_OF_TESTS = 100;
+	private static final int MIN_PRIME_VAL = 98000;
+	private static final int MAX_PRIME_VAL = 100000;
 	
 	
 	public static void main(String [] args)
@@ -71,14 +71,8 @@ public class Driver
 	//Fermat Primality Test
 	private static ArrayList<Integer> getPrimes(){
 		ArrayList<Integer> primes = new ArrayList<Integer>();
-		ArrayList<Integer> aRange = new ArrayList<Integer>();
 		final int INITIAL_N = MIN_PRIME_VAL;
 		final int T = 5;
-		
-		for(int i = 2; i < INITIAL_N - 1; i++)
-		{
-			aRange.add(i);
-		}
 		
 		//get primes in a given range
 		for(int n = INITIAL_N; n < MAX_PRIME_VAL; n++) 
@@ -87,8 +81,7 @@ public class Driver
 			for(int i = 0; i < T; i++) 
 			{
 				//randomly select a in range 2 to n-2
-				int a = randomSelect(aRange);
-				
+				int a = ThreadLocalRandom.current().nextInt(2, n - 1);
 				if(computeModExp(a, n-1, n) != 1)
 				{
 					isLiklyPrime = false;
@@ -99,8 +92,6 @@ public class Driver
 			{
 				primes.add(n);
 			}
-			
-			aRange.add(n - 1);
 		}
 		
 		return primes;
