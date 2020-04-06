@@ -7,7 +7,7 @@ import java.util.Random;
 public class Driver 
 {
 	private static Random randomGenerator = new Random(System.currentTimeMillis());
-	private static final int NUM_OF_TESTS = 10;
+	private static final int NUM_OF_TESTS = 2;
 	
 	private static final int MIN_PRIME_VAL = 10;
 	private static final int MAX_PRIME_VAL = 2000000;
@@ -42,14 +42,14 @@ public class Driver
 		System.out.println("Test done!");
 		
 		System.out.println("\nData: (in seconds)");
-		System.out.println("Trial\t\tFermat");
+		System.out.println("Trial\t\t\tFermat");
 		for(int i = 0; i < timesTrial.size(); i++) 
 		{
 			System.out.print(timesTrial.get(i) + "\t\t" + timesFermat.get(i));
 			if(timesTrial.get(i) > timesFermat.get(i)) {
-				System.out.println("\t\tFermat Won!");
+				System.out.println("\tFermat Won!");
 			}else {
-				System.out.println("\t\tTrials Won!");
+				System.out.println("\tTrials Won!");
 			}
 		}
 	}
