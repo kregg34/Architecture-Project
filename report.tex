@@ -5,112 +5,118 @@
 \title{Optimization of Prime Numbers Factoring}
 \author{
 	Dong Hyun Kim\\
-\texttt{3522704}
-\and
-Craig Beaman\\
-\texttt{3510536}}
+	\texttt{3522704}
+	\and
+	Craig Beaman\\
+	\texttt{3510536}}
 
 \begin{document}
-
-\maketitle
-
-\begin{abstract}
-This report showcases the different run-times of two algorithms that have been developed for the factorization of large composite numbers. The algorithms have been executed on two different computers with different specifications. The algorithms that have been implemented are Fermat's factorization algorithm and the Trial Division algorithm. The two different specifications and algorithms will be analyzed based on how the run-time of prime factorization varies.
-\end{abstract}
-
-\section{Introduction}
-There are numerous algorithms that have been developed for prime number factorization over the centuries. Some of the algorithms include Dixon's algorithm, trial division, Fermat's method, Pollard's $p-1$ method, and the quadratic sieve algorithm. Algorithms such as trial division and Fermat's method are relatively simple, but they both suffer from long run-times. Factoring large composite numbers has important applications in cryptosystems such as RSA public key cryptography.
-
-\section{Trial Division}
-Trial division is one of the simplest algorithm for computing the factorization of composite numbers. To factor a composite number $n$, it works as follows: The algorithm consecutively tries all numbers $x$ in the range $2$ to $\sqrt{n}$. It computes $x$ (mod $n$) and if the value to this is zero, then $x$ is a nontrival factor of $n$. The algorithm then proceeds but it replaces $n$ with $\frac{n}{x}$, which allows the algorithm to find all factors of $n$, not just one. The algorithm has has one of the worst run-times of all the factoring algorithms as it has time complexity of: $\frac{n\sqrt{n}}{ln(n^2)}$.
-
-\subsection{Code implementation}
-The code implementation can be done in few lines. We use the factor 2 as the first possible factor. Using 2, we must divide the number with the factor variable. If it does not have any remainders, append the factor number to the list of prime numbers. If it has a non-zero remainder, increment the divisor and continue testing remainder values. Update the dividend if you find a factor and stop once the dividend is one. Return the list of factors when done.
-\\ 
-\begin{lstlisting}[language=Java]
-def trial_division(n: int) ->List[int]:
+	
+	\maketitle
+	
+	\begin{abstract}
+		This report showcases the different run-times of two algorithms that have been developed for the factorization of large composite numbers. The algorithms have been executed on two different computers with different specifications. The algorithms that have been implemented are Fermat's factorization algorithm and the Trial Division algorithm. The two different specifications and algorithms will be analyzed based on how the run-time of prime factorization varies.
+	\end{abstract}
+	
+	\section{Introduction}
+	There are numerous algorithms that have been developed for prime number factorization over the centuries. Some of the algorithms include Dixon's algorithm, trial division, Fermat's method, Pollard's $p-1$ method, and the quadratic sieve algorithm. Algorithms such as trial division and Fermat's method are relatively simple, but they both suffer from long run-times. Factoring large composite numbers has important applications in cryptosystems such as RSA public key cryptography.
+	
+	\section{Trial Division}
+	Trial division is one of the simplest algorithm for computing the factorization of composite numbers. To factor a composite number $n$, it works as follows: The algorithm consecutively tries all numbers $x$ in the range $2$ to $\sqrt{n}$. It computes $x$ (mod $n$) and if the value to this is zero, then $x$ is a nontrival factor of $n$. The algorithm then proceeds but it replaces $n$ with $\frac{n}{x}$, which allows the algorithm to find all factors of $n$, not just one. The algorithm has has one of the worst run-times of all the factoring algorithms as it has time complexity of: $\frac{n\sqrt{n}}{ln(n^2)}$.
+	
+	\subsection{Code implementation}
+	The code implementation can be done in few lines. We use the factor 2 as the first possible factor. Using 2, we must divide the number with the factor variable. If it does not have any remainders, append the factor number to the list of prime numbers. If it has a non-zero remainder, increment the divisor and continue testing remainder values. Update the dividend if you find a factor and stop once the dividend is one. Return the list of factors when done.
+	\\ 
+	\begin{lstlisting}[language=Java]
+	def trial_division(n: int) ->List[int]:
 	a=[]
 	f=2
 	while n>1:
-		if n%f==0:
-			a.append(f)
-			n/=f
-		else:
-			f+=1
+	if n%f==0:
+	a.append(f)
+	n/=f
+	else:
+	f+=1
 	return a
-\end{lstlisting}
-This algorithm works well for small numbers, but once the number gets significantly large, the run-time becomes quite poor.
-
-\section{Fermat's Factorization}
-Fermat's Factorization method is based on the representation of an odd integer as the difference of two squares. For an integer $n$, we want $a$ and $b$ such as: $n=a^2-b^2=(a+b)(a-b)$ where $(a+b)$ and $(a-b)$ are the factors of the number $n$.
-\subsection{Code implementation}
-\begin{lstlisting}[basicstyle=\small]
-class GFG  
-{ 
-    static void FermatFactors(int n) 
-    { 
-         if(n <= 0) 
-         { 
-              System.out.print("["+ n + "]"); 
-              return; 
-         } 
-         if((n & 1) == 0) 
-         { 
-             System.out.print("[" + n / 2.0 + "," + 2 + "]");  
-             return; 
-         } 
-         int a = (int)Math.ceil(Math.sqrt(n)) ;  
-         if(a * a == n)
-         { 
-             System.out.print("[" + a + "," + a + "]");  
-             return; 	
-         } 
-         int b; 
-         while(true) 
-         { 
-             int b1 = a * a - n ; 
-             b = (int)(Math.sqrt(b1)) ; 
-             if(b * b == b1) 
-             break; 
-         else
-             a += 1; 
-         } 
-         System.out.print("[" + (a - b) +"," + (a + b) + "]" );  
-         return; 
-     }
- }
-\end{lstlisting}
-If $n=pq$ is a factorization of $n$ into two positive integers. Then since $n$ is odd so $p$ and $q$ are both odd. Let $a=\frac{1}{2}\times(p+q)$ and $b=\frac{1}{2}\times(q-p)$. Since $a$ and $b$ are both integers, then $p=(a-b)$ and $q=(a+b)$. So $n=pq=(a-b)(a+b)=a^2-b^2$. If we come across the factors during code execution, then the square root ends up as a integer number. So, the square root returning an integer is the indication that we have the solution. If the square root has a fractional component, then this is not a solution. Fermat factorization is fastest when the prime factors are close to one another in value.
- 
-\section{Run-time and Analysis}
-The $Driver.java$ allows the user set the minimum and maximum random prime factors via changing the values of \lstinline|MIN_PRIME_VAL| and \lstinline|MAX_PRIME_VAL|. The variable \lstinline|NUM_OF_TESTS| will change the number of random composite numbers tested. There is also an option to use a seed for the \lstinline|randomGenerator| which affects which random prime factors, and hence which composite numbers, are tested.
-
-\subsection{Specification and Run-times}
-The specification of the machines is an important aspect of the test as it could alter the run-time of the two algorithms. The two machines that have been tested are as follows:
-\begin{itemize}
-	\item Nvidia GeForce 940MX 2GB VRAM, Intel Core i5-7200U @ 3.1GHz
-	\item Nvidia GeForce 1070 8GB VRAM, Intel Core i5-3570K @ 4.1GHz OC
-\end{itemize}
-We ran the test on each machine using three different variable values. We used the seed value $123456789$ for the \lstinline|randomGenerator| for all tests.
-
-\pagebreak
-\begin{itemize}
-	\item Test 1: Number of tests = 10, minimum value = 5, max value = 10000000
-	\item Test 2: Number of tests = 100, minimum value = 98000, max value = 100000
-	\item Test 3: Number of tests = 100, minimum value = 5, max value = 100000
-\end{itemize}
-Next page shows the average for each of the tests on Trial and Fermat algorithms. PC1 and PC2 refer to the first and second computer respectively. All values shown are in seconds.
-
-\begin{table}[!h]
-	\begin{tabular}{llll}
-		& Test 1  & Test 2  & Test 3  \\
-		PC1 Trial  & 0.02021962 & 0.00685432 & 0.48980418 \\
-		PC2 Trial  & 0.0198812  & 0.0058421  & 0.3921651  \\
-		PC1 Fermat & 0.28818518 & 0.28818518 & 20.1220491 \\
-		PC2 Fermat & 0.1991548  & 0.2004981  & 17.168416 
-	\end{tabular}
+	\end{lstlisting}
+	This algorithm works well for small numbers, but once the number gets significantly large, the run-time becomes quite poor.
 	
-
-\end{table}
-
+	\section{Fermat's Factorization}
+	Fermat's Factorization method is based on the representation of an odd integer as the difference of two squares. For an integer $n$, we want $a$ and $b$ such as: $n=a^2-b^2=(a+b)(a-b)$ where $(a+b)$ and $(a-b)$ are the factors of the number $n$.
+	\subsection{Code implementation}
+	\begin{lstlisting}[basicstyle=\small]
+	class GFG  
+	{ 
+	static void FermatFactors(int n) 
+	{ 
+	if(n <= 0) 
+	{ 
+	System.out.print("["+ n + "]"); 
+	return; 
+	} 
+	if((n & 1) == 0) 
+	{ 
+	System.out.print("[" + n / 2.0 + "," + 2 + "]");  
+	return; 
+	} 
+	int a = (int)Math.ceil(Math.sqrt(n)) ;  
+	if(a * a == n)
+	{ 
+	System.out.print("[" + a + "," + a + "]");  
+	return; 	
+	} 
+	int b; 
+	while(true) 
+	{ 
+	int b1 = a * a - n ; 
+	b = (int)(Math.sqrt(b1)) ; 
+	if(b * b == b1) 
+	break; 
+	else
+	a += 1; 
+	} 
+	System.out.print("[" + (a - b) +"," + (a + b) + "]" );  
+	return; 
+	}
+	}
+	\end{lstlisting}
+	If $n=pq$ is a factorization of $n$ into two positive integers. Then since $n$ is odd so $p$ and $q$ are both odd. Let $a=\frac{1}{2}\times(p+q)$ and $b=\frac{1}{2}\times(q-p)$. Since $a$ and $b$ are both integers, then $p=(a-b)$ and $q=(a+b)$. So $n=pq=(a-b)(a+b)=a^2-b^2$. If we come across the factors during code execution, then the square root ends up as a integer number. So, the square root returning an integer is the indication that we have the solution. If the square root has a fractional component, then this is not a solution. Fermat factorization is fastest when the prime factors are close to one another in value.
+	
+	\section{Run-time and Analysis}
+	The $Driver.java$ allows the user set the minimum and maximum random prime factors via changing the values of \lstinline|MIN_PRIME_VAL| and \lstinline|MAX_PRIME_VAL|. The variable \lstinline|NUM_OF_TESTS| will change the number of random composite numbers tested. There is also an option to use a seed for the \lstinline|randomGenerator| which affects which random prime factors, and hence which composite numbers, are tested.
+	
+	\subsection{Specification and Run-times}
+	The specification of the machines is an important aspect of the test as it could alter the run-time of the two algorithms. The two machines that have been tested are as follows:
+	\begin{itemize}
+		\item Nvidia GeForce 940MX 2GB VRAM, Intel Core i5-7200U @ 3.1GHz
+		\item Nvidia GeForce 1070 8GB VRAM, Intel Core i5-3570K @ 4.1GHz OC
+	\end{itemize}
+	We ran the test on each machine using three different variable values. We used the seed value $123456789$ for the \lstinline|randomGenerator| for all tests.
+	
+	\pagebreak
+	\begin{itemize}
+		\item Test 1: Number of tests = 10, minimum value = 5, max value = 10000000
+		\item Test 2: Number of tests = 100, minimum value = 98000, max value = 100000
+		\item Test 3: Number of tests = 100, minimum value = 5, max value = 100000
+	\end{itemize}
+	Below shows the average for each of the tests on Trial and Fermat algorithms. PC1 and PC2 refer to the first and second computer respectively. All values shown are in seconds.
+	
+	\begin{table}[!h]
+		\begin{tabular}{llll}
+			& Test 1  & Test 2  & Test 3  \\
+			PC1 Trial  & 0.02021962 & 0.00685432 & 0.48980418 \\
+			PC2 Trial  & 0.0198812  & 0.0058421  & 0.3921651  \\
+			PC1 Fermat & 0.28818518 & 0.28818518 & 20.1220491 \\
+			PC2 Fermat & 0.1991548  & 0.2004981  & 17.168416 
+		\end{tabular}
+	\end{table}
+	
+	\subsection{Energy Usage Cost Differences}
+	Intel core i5-3570K has max TDP of 77W and Intel core i5-7200U has max TDP 15W. i5-3570K has about 5 times more running cost per day of \$0.038. \begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{4}
+		\caption{}
+		\label{fig:4}
+	\end{figure}
+	
 \end{document}
